@@ -29,7 +29,7 @@ inputs:
 
 runs:
   using: "composite"
-
+  steps:
     - name: Build the Mule-App
       run: |
         mvn --batch-mode clean verify
