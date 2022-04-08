@@ -33,6 +33,7 @@ runs:
     - name: Build the Mule-App
       run: |
         mvn --batch-mode clean verify
+      shell: bash
 
     - name: Deploy the Mule-App to Exchange and the RuntimeManager - SANDBOX
       run: |
