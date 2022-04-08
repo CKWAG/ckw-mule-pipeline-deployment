@@ -1,0 +1,76 @@
+# This workflow will build a MuleSoft project and deploy to CloudHub
+name: Setup JDK Maven and Git
+description: setting up the required tools
+
+inputs:
+  muleServer:
+    # Possible Values
+    ## onprem
+    ## cloud (azure cloud)
+    ## CloudHub
+    required: true
+    type: string  
+  muleEnvProperties:
+    # Possible Values
+    ## dev
+    ## qa
+    required: true
+    type: string
+  muleDocumentation:
+    # Possible Values
+    ## DesignCenter
+    ## Github
+    required: true
+    type: string
+  anypointClientId:
+    required: true
+  anypointClientSecret:
+    required: true
+
+runs:
+  using: "composite"
+
+    - name: Build the Mule-App
+      run: |
+        mvn --batch-mode clean verify
+
+    - name: eploy the Mule-App to Exchange and the RuntimeManager - SANDBOX
+      run: |
+
+        # not an argument, it's required for the resulting maven command
+        MAVEN_PROFILE="CloudHubSand"
+        # not an argument, it's required for the resulting maven command
+        ADDITIONAL_MAVEN_GOAL="deploy:deploy"
+        # not an argument, it's required for the resulting maven command
+        ADDITIONAL_MAVEN_ARGS=""
+
+        echo "deployment Runtime: '$MULE_SERVER', Env-Properties: '$MULE_ENV_PROPERTIES', Documentation-Source: '$MULE_DOCUMENTATION'"
+        if [[ $MULE_SERVER = "onprem" ]] || [[ $MULE_SERVER = "cloud" ]]; then
+           echo "Runtime-Deployment"
+           MAVEN_PROFILE="RuntimeManager"
+           ADDITIONAL_MAVEN_ARGS="-Danypoint.target=ckw-$MULE_SERVER-test"
+        else
+            echo "CloudHub-Deployment"
+        fi
+
+        if [[ $MULE_DOCUMENTATION == "DesignCenter" ]]; then
+            ADDITIONAL_MAVEN_GOAL="exec:exec"
+        fi
+
+        # some debug informations
+        echo "ADDITIONAL_MAVEN_GOAL='$ADDITIONAL_MAVEN_GOAL'; MAVEN_PROFILE='$MAVEN_PROFILE', MULE_ENV_PROPERTIES='$MULE_ENV_PROPERTIES', ADDITIONAL_MAVEN_ARGS='$ADDITIONAL_MAVEN_ARGS'"
+
+        # first build the mule-app
+        mvn --batch-mode clean verify
+
+        # second deploy the mule-app in anypoint and upload the documentationx
+        mvn --batch-mode deploy $ADDITIONAL_MAVEN_GOAL -P $MAVEN_PROFILE -DmuleDeploy  -Danypoint.environment=Sandbox -Dmule.env=$MULE_ENV_PROPERTIES -Danypoint.AppClientId=$ANYPOINT_CLIENTID -Danypoint.AppClientSecret=$ANYPOINT_CLIENTSECRET $ADDITIONAL_MAVEN_ARGS
+
+
+      env:
+        MULE_SERVER: ${{ inputs.muleServer }}
+        MULE_ENV_PROPERTIES: ${{ inputs.muleEnvProperties }}
+        MULE_DOCUMENTATION: ${{ inputs.muleDocumentation }}
+        ANYPOINT_CLIENTID: ${{ inputs.anypointClientId }}
+        ANYPOINT_CLIENTSECRET: ${{ inputs.anypointClientSecret }}
+      shell: bash
