@@ -34,7 +34,7 @@ runs:
       run: |
         mvn --batch-mode clean verify
 
-    - name: eploy the Mule-App to Exchange and the RuntimeManager - SANDBOX
+    - name: Deploy the Mule-App to Exchange and the RuntimeManager - SANDBOX
       run: |
 
         # not an argument, it's required for the resulting maven command
@@ -59,9 +59,6 @@ runs:
 
         # some debug informations
         echo "ADDITIONAL_MAVEN_GOAL='$ADDITIONAL_MAVEN_GOAL'; MAVEN_PROFILE='$MAVEN_PROFILE', MULE_ENV_PROPERTIES='$MULE_ENV_PROPERTIES', ADDITIONAL_MAVEN_ARGS='$ADDITIONAL_MAVEN_ARGS'"
-
-        # first build the mule-app
-        mvn --batch-mode clean verify
 
         # second deploy the mule-app in anypoint and upload the documentationx
         mvn --batch-mode deploy $ADDITIONAL_MAVEN_GOAL -P $MAVEN_PROFILE -DmuleDeploy  -Danypoint.environment=Sandbox -Dmule.env=$MULE_ENV_PROPERTIES -Danypoint.AppClientId=$ANYPOINT_CLIENTID -Danypoint.AppClientSecret=$ANYPOINT_CLIENTSECRET $ADDITIONAL_MAVEN_ARGS
