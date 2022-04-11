@@ -75,7 +75,7 @@ runs:
         fi
       env:
         MULE_SERVER: ${{ inputs.muleServer }}
-        MULE_ENV_PROPERTIES: ${{ inputs.muleEnvProperties }}
+        MULE_ENV: ${{ inputs.muleEnvProperties }}
         MULE_DOCUMENTATION: ${{ inputs.muleDocumentation }}
         ANYPOINT_CLIENTID: ${{ inputs.anypointClientId }}
         ANYPOINT_CLIENTSECRET: ${{ inputs.anypointClientSecret }}
