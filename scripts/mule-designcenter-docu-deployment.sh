@@ -31,5 +31,5 @@ muleaccesstoke=$(curl --location --request POST https://eu1.anypoint.mulesoft.co
  --data-urlencode "client_secret=$7" \
  --data-urlencode 'grant_type=client_credentials' --silent | jq -r ".access_token")
 
-source scripts/mule-git-clone-design-center-project.sh "$8" "$5" "$6" "$7" "$3" "$1"
-source scripts/mule-upload-raml-to-exchange.sh "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$9"
+source docu-deployment/scripts/mule-git-clone-design-center-project.sh "$8" "$5" "$6" "$7" "$3" "$1"
+source docu-deployment/scripts/mule-upload-raml-to-exchange.sh "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$9"
