@@ -77,7 +77,7 @@ runs:
 
         if [[ $MULE_ENV == "prod" ]]; then
             echo "Production deployment"
-            mvn --batch-mode release:clean release:prepare release:perform -Dgh.user=$GH_USER -Dgh.pw=$GH_PASSWORD -Dgoals="deploy $ADDITIONAL_MAVEN_GOAL" -Darguments="-P $MAVEN_PROFILE,$MAVEN_DOCU_PROFILE --batch-mode -DmuleDeploy -Danypoint.AppClientId=$ANYPOINT_CLIENTID -Danypoint.AppClientSecret=$ANYPOINT_CLIENTSECRET -Danypoint.environment=Production -Dmule.env=$MULE_ENV -Dpipeline.script.subfolder='../../' $ADDITIONAL_MAVEN_ARGS"
+            mvn --batch-mode release:clean release:prepare release:perform -Dgh.user=$GH_USER -Dgh.pw=$GH_PASSWORD -Dgoals="deploy $ADDITIONAL_MAVEN_GOAL" -Darguments="-P $MAVEN_PROFILE,$MAVEN_DOCU_PROFILE --batch-mode -DmuleDeploy -Danypoint.AppClientId=$ANYPOINT_CLIENTID -Danypoint.AppClientSecret=$ANYPOINT_CLIENTSECRET -Danypoint.environment=Production -Dmule.env=$MULE_ENV -Dpipeline.script.subfolder='/../..' $ADDITIONAL_MAVEN_ARGS"
         else
             echo "Sandbox deployment"
             # first build the mule-app
