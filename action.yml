@@ -20,7 +20,7 @@ inputs:
   muleDocumentation:
     # Possible Values
     ## DesignCenter
-    ## Github
+    ## GitHub
     required: true
     type: string
   anypointClientId:
@@ -40,11 +40,6 @@ runs:
       with:
         repository: CKWAG/ckw-mule-pipeline-deployment
         path: docu-deployment
-
-    - name: Display folders
-      run: |
-        ls -all
-      shell: bash
 
     - name: Deploy the Mule-App to Exchange and the RuntimeManager
       run: |
