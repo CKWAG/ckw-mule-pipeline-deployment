@@ -41,6 +41,11 @@ runs:
         repository: CKWAG/ckw-mule-pipeline-deployment
         path: docu-deployment
 
+    - name: Display folders
+      run: |
+        ls -all
+      shell: bash
+
     - name: Deploy the Mule-App to Exchange and the RuntimeManager
       run: |
         #internal used variables
