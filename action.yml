@@ -35,6 +35,12 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Checkout Deployment Bash Scripts for the Design Center Documentation
+      uses: actions/checkout@v3
+      with:
+        repository: CKWAG/ckw-mule-pipeline-deployment
+        path: docu-deployment
+
     - name: Deploy the Mule-App to Exchange and the RuntimeManager - SANDBOX
       run: |
         #internal used variables
