@@ -41,7 +41,12 @@ runs:
         repository: CKWAG/ckw-mule-pipeline-deployment
         path: docu-deployment
 
-    - name: Deploy the Mule-App to Exchange and the RuntimeManager - SANDBOX
+    - name: Display folders
+      run: |
+        ls -all
+      shell: bash
+
+    - name: Deploy the Mule-App to Exchange and the RuntimeManager
       run: |
         #internal used variables
         MAVEN_PROFILE="CloudHubSand"
