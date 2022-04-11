@@ -83,7 +83,7 @@ runs:
             # first build the mule-app
             mvn --batch-mode clean verify
             # second deploy the mule-app in anypoint and upload the documentationx as Snapshot in a Sandbox-Environment
-            mvn --batch-mode deploy $ADDITIONAL_MAVEN_GOAL -P $MAVEN_PROFILE,$MAVEN_DOCU_PROFILE -DmuleDeploy  -Danypoint.environment=Sandbox -Dmule.env=$MULE_ENV -Danypoint.AppClientId=$ANYPOINT_CLIENTID -Danypoint.AppClientSecret=$ANYPOINT_CLIENTSECRET $ADDITIONAL_MAVEN_ARGS
+            mvn --batch-mode deploy $ADDITIONAL_MAVEN_GOAL -P $MAVEN_PROFILE,$MAVEN_DOCU_PROFILE -DmuleDeploy  -Danypoint.environment=Sandbox -Dmule.env=$MULE_ENV -Dpipeline.script.subfolder='' -Danypoint.AppClientId=$ANYPOINT_CLIENTID -Danypoint.AppClientSecret=$ANYPOINT_CLIENTSECRET $ADDITIONAL_MAVEN_ARGS
         fi
       env:
         MULE_SERVER: ${{ inputs.muleServer }}
