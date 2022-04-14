@@ -80,11 +80,9 @@ runs:
             mvn --batch-mode $DOCU_MAVEN_GOAL -f target/checkout/ -P $DOCU_MAVEN_PROFILE -Dpipeline.script.subfolder='/../..' -Danypoint.AppClientId=$ANYPOINT_CLIENTID -Danypoint.AppClientSecret=$ANYPOINT_CLIENTSECRET
         else
             echo "Sandbox deployment"
-            # first build the mule-app
-            mvn --batch-mode clean verify
-            # second deploy the mule-app in the RuntimeManager
-            mvn --batch-mode deploy -P MuleBuild,$MAVEN_PROFILE,$MAVEN_DOCU_PROFILE -DmuleDeploy -Danypoint.environment=Sandbox -Dmule.env=$MULE_ENV -Danypoint.AppClientId=$ANYPOINT_CLIENTID -Danypoint.AppClientSecret=$ANYPOINT_CLIENTSECRET $ADDITIONAL_MAVEN_ARGS
-            # third upload the documentation into Exchange
+            # first deploy the mule-app in the RuntimeManager
+            mvn --batch-mode clean deploy -P MuleBuild,$MAVEN_PROFILE,$MAVEN_DOCU_PROFILE -DmuleDeploy -Danypoint.environment=Sandbox -Dmule.env=$MULE_ENV -Danypoint.AppClientId=$ANYPOINT_CLIENTID -Danypoint.AppClientSecret=$ANYPOINT_CLIENTSECRET $ADDITIONAL_MAVEN_ARGS
+            # second upload the documentation into Exchange
             mvn --batch-mode $DOCU_MAVEN_GOAL -P $DOCU_MAVEN_PROFILE -Dpipeline.script.subfolder='' -Danypoint.AppClientId=$ANYPOINT_CLIENTID -Danypoint.AppClientSecret=$ANYPOINT_CLIENTSECRET
         fi
       env:
