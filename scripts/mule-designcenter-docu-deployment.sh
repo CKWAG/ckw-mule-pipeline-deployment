@@ -37,7 +37,6 @@ muleaccesstoke=$(curl --location --request POST https://eu1.anypoint.mulesoft.co
  --data-urlencode "client_secret=$7" \
  --data-urlencode 'grant_type=client_credentials' --silent | jq -r ".access_token")
 
-source docu-deployment/scripts/mule-upload-raml-to-exchange.sh "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$9"
 
 #################################################################################################
 ## GET THE GIT-PROJECT FROM ANYPOINT DESIGN CENTER                                             ##
