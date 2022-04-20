@@ -91,8 +91,12 @@ httpstatus=$(curl -v \
   -F "files.raml.zip=@target/$3-$1-raml.zip" \
   --silent \
   --write-out %{http_code} \
-  --output /dev/null \
+  --output target/http.response.json \
   https://eu1.anypoint.mulesoft.com/exchange/api/v2/organizations/"$5"/assets/"$5"/"$3"/"$strarr");
+
+
+# print the http resonse to get better debug informations if something went wrong
+jq --color-output . target/http.response.json
 
 # check the http-status for errors
 if [ $httpstatus -lt 300 ];
@@ -100,6 +104,6 @@ then
     echo "OK, HTTP-Status $httpstatus";
     exit 0;
 else
-    echo "NOK"
+    echo "NOK $httpstatus"
     exit 1;
 fi
