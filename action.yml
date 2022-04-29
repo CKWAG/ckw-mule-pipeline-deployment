@@ -6,7 +6,7 @@ inputs:
   muleServer:
     # Possible Values
     ## onprem
-    ## cloud (azure cloud)
+    ## azure
     ## CloudHub
     required: true
     type: string  
@@ -51,7 +51,7 @@ runs:
         ADDITIONAL_MAVEN_ARGS=""
 
         echo "environment: '$MULE_ENV', Runtime: '$MULE_SERVER', Documentation-Source: '$MULE_DOCUMENTATION', MavenDocuProfile: '$MAVEN_DOCU_PROFILE"
-        if [[ $MULE_SERVER == "onprem" ]] || [[ $MULE_SERVER == "cloud" ]]; then
+        if [[ $MULE_SERVER == "onprem" ]] || [[ $MULE_SERVER == "azure" ]]; then
            MAVEN_PROFILE="RuntimeManager"
            if [[ $MULE_ENV == "prod" ]]; then
               ADDITIONAL_MAVEN_ARGS="-Danypoint.target=ckw-$MULE_SERVER-prod"
