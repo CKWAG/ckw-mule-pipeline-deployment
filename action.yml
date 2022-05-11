@@ -94,3 +94,9 @@ runs:
         GH_USER: ${{ inputs.ghUser }}
         GH_PASSWORD: ${{ inputs.ghPassword }}
       shell: bash
+ 
+    - name: upload the generated target-sites to the workspace
+      uses: actions/upload-artifact@v3
+      with:
+        name: QualityResults
+        path: target/site/
