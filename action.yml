@@ -27,6 +27,10 @@ inputs:
     required: true
   anypointClientSecret:
     required: true
+  apimanagerClientId:
+    required: true
+  apimanagerClientSecret:
+    required: true
   ghUser:
     required: true
   ghPassword:
@@ -69,19 +73,19 @@ runs:
             DOCU_MAVEN_PROFILE=$MAVEN_DOCU_PROFILE
         fi
 
-        # some debug informations
+        # some debug information
         echo "DOCU_MAVEN_GOAL='$DOCU_MAVEN_GOAL', MAVEN_DOCU_PROFILE='$MAVEN_DOCU_PROFILE', MAVEN_PROFILE='$MAVEN_PROFILE', MULE_ENV='$MULE_ENV', ADDITIONAL_MAVEN_ARGS='$ADDITIONAL_MAVEN_ARGS'"
 
         if [[ $MULE_ENV == "prod" ]]; then
             echo "Production deployment"
             # first create a tag in git and deploy the artefact into the RuntimeManager
-            mvn --batch-mode release:clean release:prepare release:perform -e -Dgh.user=$GH_USER -Dgh.pw=$GH_PASSWORD -Dgoals="deploy" -Darguments="--batch-mode -P MuleBuild,$MAVEN_PROFILE,$MAVEN_DOCU_PROFILE -DmuleDeploy -Danypoint.AppClientId=$ANYPOINT_CLIENTID -Danypoint.AppClientSecret=$ANYPOINT_CLIENTSECRET -Danypoint.environment=Production -Dmule.env=$MULE_ENV $ADDITIONAL_MAVEN_ARGS"
+            mvn --batch-mode release:clean release:prepare release:perform -e -Dgh.user=$GH_USER -Dgh.pw=$GH_PASSWORD -Dgoals="deploy" -Darguments="--batch-mode -P MuleBuild,$MAVEN_PROFILE,$MAVEN_DOCU_PROFILE -DmuleDeploy -Danypoint.AppClientId=$ANYPOINT_CLIENTID -Danypoint.AppClientSecret=$ANYPOINT_CLIENTSECRET -Danypoint.ApiManagerClientId=$APIMANAGER_CLIENTID -Danypoint.ApiManagerClientSecret=$APIMANAGER_CLIENTSECRET -Danypoint.environment=Production -Dmule.env=$MULE_ENV $ADDITIONAL_MAVEN_ARGS"
             #second upload the documentation into Exchange
             mvn --batch-mode $DOCU_MAVEN_GOAL  -e -f target/checkout/ -P $DOCU_MAVEN_PROFILE -Dpipeline.script.subfolder='/../..' -Danypoint.AppClientId=$ANYPOINT_CLIENTID -Danypoint.AppClientSecret=$ANYPOINT_CLIENTSECRET
         else
             echo "Sandbox deployment"
             # first deploy the mule-app in the RuntimeManager
-            mvn --batch-mode clean deploy -e -P MuleBuild,$MAVEN_PROFILE,$MAVEN_DOCU_PROFILE -DmuleDeploy -Danypoint.environment=Sandbox -Dmule.env=$MULE_ENV -Danypoint.AppClientId=$ANYPOINT_CLIENTID -Danypoint.AppClientSecret=$ANYPOINT_CLIENTSECRET $ADDITIONAL_MAVEN_ARGS
+            mvn --batch-mode clean deploy -e -P MuleBuild,$MAVEN_PROFILE,$MAVEN_DOCU_PROFILE -DmuleDeploy -Danypoint.environment=Sandbox -Dmule.env=$MULE_ENV -Danypoint.AppClientId=$ANYPOINT_CLIENTID -Danypoint.AppClientSecret=$ANYPOINT_CLIENTSECRET -Danypoint.ApiManagerClientId=$APIMANAGER_CLIENTID -Danypoint.ApiManagerClientSecret=$APIMANAGER_CLIENTSECRET $ADDITIONAL_MAVEN_ARGS
             # second upload the documentation into Exchange
             mvn --batch-mode $DOCU_MAVEN_GOAL -e -P $DOCU_MAVEN_PROFILE -Dpipeline.script.subfolder='' -Danypoint.AppClientId=$ANYPOINT_CLIENTID -Danypoint.AppClientSecret=$ANYPOINT_CLIENTSECRET
         fi
