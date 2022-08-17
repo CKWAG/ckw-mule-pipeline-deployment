@@ -55,6 +55,7 @@ runs:
         ADDITIONAL_MAVEN_ARGS=""
 
         echo "environment: '$MULE_ENV', Runtime: '$MULE_SERVER', Documentation-Source: '$MULE_DOCUMENTATION', MavenDocuProfile: '$MAVEN_DOCU_PROFILE"
+        echo "anypoint clientid: '$APIMANAGER_CLIENTID' "
         if [[ $MULE_SERVER == "onprem" ]] || [[ $MULE_SERVER == "azure" ]]; then
            MAVEN_PROFILE="RuntimeManager"
            if [[ $MULE_ENV == "prod" ]]; then
