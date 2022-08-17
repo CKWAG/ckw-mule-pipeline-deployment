@@ -95,6 +95,8 @@ runs:
         MULE_DOCUMENTATION: ${{ inputs.muleDocumentation }}
         ANYPOINT_CLIENTID: ${{ inputs.anypointClientId }}
         ANYPOINT_CLIENTSECRET: ${{ inputs.anypointClientSecret }}
+        APIMANAGER_CLIENTID: ${{ inputs.apimanagerClientId }}
+        APIMANAGER_CLIENTSECRET: ${{ inputs.apimanagerClientSecret }}
         GH_USER: ${{ inputs.ghUser }}
         GH_PASSWORD: ${{ inputs.ghPassword }}
       shell: bash
