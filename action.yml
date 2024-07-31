@@ -35,7 +35,8 @@ inputs:
     required: true
   ghPassword:
     required: true
-
+  encryptSecret:
+    required: true
 runs:
   using: "composite"
   steps:
@@ -66,6 +67,7 @@ runs:
             MAVEN_PROFILE="CloudHubProd"
         else
             echo "CloudHub-Sandbox Deployment"
+            ADDITIONAL_MAVEN_ARGS="-DencryptSecret=" +  $ENCRYPTSECRET
         fi
 
         if [[ $MULE_DOCUMENTATION == "DesignCenter" ]]; then
@@ -99,6 +101,7 @@ runs:
         APIMANAGER_CLIENTSECRET: ${{ inputs.apimanagerClientSecret }}
         GH_USER: ${{ inputs.ghUser }}
         GH_PASSWORD: ${{ inputs.ghPassword }}
+        ENCRYPTSECRET: ${{ inputs.encryptSecret }}
       shell: bash
  
     - name: upload the generated target-sites to the workspace
