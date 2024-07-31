@@ -81,7 +81,7 @@ runs:
         if [[ $MULE_ENV == "prod" ]]; then
             echo "Production deployment"
             # first create a tag in git and deploy the artefact into the RuntimeManager
-            mvn --batch-mode release:clean release:prepare release:perform -e -Dgh.user=$GH_USER -Dgh.pw=$GH_PASSWORD -Dgoals="deploy" -Darguments="--batch-mode -P MuleBuild,$MAVEN_PROFILE,$MAVEN_DOCU_PROFILE -DencryptSecret=$ENCRYPTSECRET -DmuleDeploy -Danypoint.AppClientId=$ANYPOINT_CLIENTID -Danypoint.AppClientSecret=$ANYPOINT_CLIENTSECRET -Danypoint.ApiManagerClientId=$APIMANAGER_CLIENTID -Danypoint.ApiManagerClientSecret=$APIMANAGER_CLIENTSECRET -Danypoint.environment=Production -Dmule.env=$MULE_ENV $ADDITIONAL_MAVEN_ARGS"
+            mvn --batch-mode release:clean release:prepare release:perform -e -Dgh.user=$GH_USER -Dgh.pw=$GH_PASSWORD -Dgoals="deploy" -Darguments="--batch-mode -P MuleBuild,$MAVEN_PROFILE,$MAVEN_DOCU_PROFILE -Danypoint.encryptSecret=$encryptSecret -DmuleDeploy -Danypoint.AppClientId=$ANYPOINT_CLIENTID -Danypoint.AppClientSecret=$ANYPOINT_CLIENTSECRET -Danypoint.ApiManagerClientId=$APIMANAGER_CLIENTID -Danypoint.ApiManagerClientSecret=$APIMANAGER_CLIENTSECRET -Danypoint.environment=Production -Dmule.env=$MULE_ENV $ADDITIONAL_MAVEN_ARGS"
             #second upload the documentation into Exchange
             mvn --batch-mode $DOCU_MAVEN_GOAL  -e -f target/checkout/ -P $DOCU_MAVEN_PROFILE -Dpipeline.script.subfolder='/../..' -Danypoint.AppClientId=$ANYPOINT_CLIENTID -Danypoint.AppClientSecret=$ANYPOINT_CLIENTSECRET
         else
@@ -101,7 +101,7 @@ runs:
         APIMANAGER_CLIENTSECRET: ${{ inputs.apimanagerClientSecret }}
         GH_USER: ${{ inputs.ghUser }}
         GH_PASSWORD: ${{ inputs.ghPassword }}
-        ENCRYPTSECRET: ${{ inputs.encryptSecret }}
+        encryptSecret: ${{ inputs.encryptSecret }}
       shell: bash
  
     - name: upload the generated target-sites to the workspace
