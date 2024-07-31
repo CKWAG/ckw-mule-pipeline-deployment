@@ -87,7 +87,7 @@ runs:
         else
             echo "Sandbox deployment"
             # first deploy the mule-app in the RuntimeManager
-            mvn --batch-mode clean deploy -e -P MuleBuild,$MAVEN_PROFILE,$MAVEN_DOCU_PROFILE -DmuleDeploy -Danypoint.environment=Sandbox -Dmule.env=$MULE_ENV -Danypoint.AppClientId=$ANYPOINT_CLIENTID -Danypoint.encryptSecret=$encrypSecret -Danypoint.AppClientSecret=$ANYPOINT_CLIENTSECRET -Danypoint.ApiManagerClientId=$APIMANAGER_CLIENTID -Danypoint.ApiManagerClientSecret=$APIMANAGER_CLIENTSECRET $ADDITIONAL_MAVEN_ARGS
+            mvn --batch-mode clean deploy -e -P MuleBuild,$MAVEN_PROFILE,$MAVEN_DOCU_PROFILE -DmuleDeploy -Danypoint.environment=Sandbox -Dmule.env=$MULE_ENV -Danypoint.AppClientId=$ANYPOINT_CLIENTID -DencryptSecret=$ENCRYPTSECRET -Danypoint.AppClientSecret=$ANYPOINT_CLIENTSECRET -Danypoint.ApiManagerClientId=$APIMANAGER_CLIENTID -Danypoint.ApiManagerClientSecret=$APIMANAGER_CLIENTSECRET $ADDITIONAL_MAVEN_ARGS
             # second upload the documentation into Exchange
             mvn --batch-mode $DOCU_MAVEN_GOAL -e -P $DOCU_MAVEN_PROFILE -Dpipeline.script.subfolder='' -Danypoint.AppClientId=$ANYPOINT_CLIENTID -Danypoint.AppClientSecret=$ANYPOINT_CLIENTSECRET
          fi
@@ -101,7 +101,7 @@ runs:
         APIMANAGER_CLIENTSECRET: ${{ inputs.apimanagerClientSecret }}
         GH_USER: ${{ inputs.ghUser }}
         GH_PASSWORD: ${{ inputs.ghPassword }}
-        encryptSecret: ${{ inputs.encryptSecret }}
+        ENCRYPTSECRET: ${{ inputs.encryptSecret }}
       shell: bash
  
     - name: upload the generated target-sites to the workspace
