@@ -43,24 +43,43 @@ muleaccesstoke=$(curl --location --request POST https://eu1.anypoint.mulesoft.co
 #################################################################################################
 
 # clone the project to get all documentation
-git -c http.extraheader="Authorization: bearer $muleaccesstoke" clone https://eu1.anypoint.mulesoft.com/git/$5/$8
+# git -c http.extraheader="Authorization: bearer $muleaccesstoke" clone https://eu1.anypoint.mulesoft.com/git/$5/$8
 
 # delete git folder since they are not used within the exchange documentation
-rm -f $8/.gitignore
-rm -rf $8/.git
+# rm -f $8/.gitignore
+# rm -rf $8/.git
 
 # zip the documents from design center
-cd $8
-zip -r ../target/$3-$1-raml.zip *
-cd ..
+# cd $8
+# zip -r ../target/$3-$1-raml.zip *
+# cd ..
 
 # clean-up the downloaded project from design center
-rm -rf $8
+# rm -rf $8
+
+#################################################################################################
+## GET THE GIT-PROJECT-OWNER FROM ANYPOINT DESIGN CENTER                                       ##
+#################################################################################################
+
+httpstatus=$(curl -v \
+  -H "Authorization: bearer $muleaccesstoke" \
+  -H "x-organization-id: $5" \
+  --silent \
+  --write-out %{http_code} \
+  --output ./http.response.json \
+  https://eu1.anypoint.mulesoft.com/designcenter/api-designer/projects/"$8");
+
+
+# print the http resonse to get better debug informations if something went wrong
+jq --color-output . ./http.response.json
+
+# get x-owner-id
+projectownerid=$(jq '.createdBy' http.response.json)
 
 #################################################################################################
 ## UPLOAD THE RAML DOCUMENTATION INTO ANYPOINT EXCHANGE                                        ##
 #################################################################################################
-IFS='-'; #setting comma as delimiter  
+IFS='-'; #setting hyphen as delimiter  
 read -a strarr <<<"$1"; #reading str as an array as tokens separated by IFS
 
 assetStatus="development";
@@ -72,38 +91,84 @@ then
 fi
 
 # read the main-Version
-IFS='.'; #setting comma as delimiter  
+IFS='.'; #setting point as delimiter  
 read -a strvers <<<"$strarr[0]"; #reading str as an array as tokens separated by IFS
 mainVersion="v$strvers";
 
 ## debug output
 echo "the asset will be deployt as \"$assetStatus\" and main-version \"$mainVersion\" and detail-version $strarr";
 
+# httpstatus=$(curl -v \
+#  -H "Authorization: bearer $muleaccesstoke" \
+#  -H 'x-sync-publication: true' \
+#  -F "name=$2" \
+#  -F "description=$9" \
+#  -F 'type=RAML' \
+#  -F "status=$assetStatus" \
+#  -F "properties.mainFile=$4" \
+#  -F "properties.apiVersion=$mainVersion" \
+#  -F "files.raml.zip=@target/$3-$1-raml.zip" \
+#  --silent \
+#  --write-out %{http_code} \
+#  --output target/http.response.json \
+#  https://eu1.anypoint.mulesoft.com/exchange/api/v2/organizations/"$5"/assets/"$5"/"$3"/"$strarr");
+
+#################################################################################################
+## LOCK THE DESIGN CENTER PROJECT MASTER BRANCH                                                ##
+#################################################################################################
 httpstatus=$(curl -v \
   -H "Authorization: bearer $muleaccesstoke" \
-  -H 'x-sync-publication: true' \
-  -F "name=$2" \
-  -F "description=$9" \
-  -F 'type=RAML' \
-  -F "status=$assetStatus" \
-  -F "properties.mainFile=$4" \
-  -F "properties.apiVersion=$mainVersion" \
-  -F "files.raml.zip=@target/$3-$1-raml.zip" \
+  -H "x-organization-id: $5" \
+  -H "x-owner-id: $projectownerid" \
+  -X POST \
   --silent \
   --write-out %{http_code} \
-  --output target/http.response.json \
-  https://eu1.anypoint.mulesoft.com/exchange/api/v2/organizations/"$5"/assets/"$5"/"$3"/"$strarr");
+  --output ./http.response.json \
+  https://eu1.anypoint.mulesoft.com/designcenter/api-designer/projects/"$8"/branches/master/acquireLock);
+
+# print the http resonse to get better debug informations if something went wrong
+jq --color-output . ./http.response.json
+
+#################################################################################################
+## PUBLISH THE API RAML TO EXCHANGE AS AN ASSET                                                ##
+#################################################################################################
+publish_httpstatus=$(curl -v \
+  -H "Authorization: bearer $muleaccesstoke" \
+  -H "x-organization-id: $5" \
+  -H "x-owner-id: $projectownerid" \
+  -X POST \
+  -d "{'name':'$2', 'apiVersion':'$mainVersion', 'version':'$strarr', 'main':'$4', 'assetId':'$3', 'groupId':'$5','classifier':'raml'}" \
+  --silent \
+  --write-out %{http_code} \
+  --output ./http.response.json \
+  https://eu1.anypoint.mulesoft.com/designcenter/api-designer/projects/"$8");
 
 
 # print the http resonse to get better debug informations if something went wrong
-jq --color-output . target/http.response.json
+jq --color-output . ./http.response.json
+
+#################################################################################################
+# UNLOCK THE DESIGN CENTER PROJECT MASTER BRANCH                                               ##
+#################################################################################################
+httpstatus=$(curl -v \
+  -H "Authorization: bearer $muleaccesstoke" \
+  -H "x-organization-id: $5" \
+  -H "x-owner-id: $projectownerid" \
+  -X POST \
+  --silent \
+  --write-out %{http_code} \
+  --output ./http.response.json \
+  https://eu1.anypoint.mulesoft.com/designcenter/api-designer/projects/"$8"/branches/master/releaseLock);
+
+# print the http resonse to get better debug informations if something went wrong while publishing
+jq --color-output . ./http.response.json
 
 # check the http-status for errors
-if [ $httpstatus -lt 300 ];
+if [ $publish_httpstatus -lt 300 ];
 then
-    echo "OK, HTTP-Status $httpstatus";
+    echo "OK, HTTP-Status $publish_httpstatus";
     exit 0;
 else
-    echo "NOK $httpstatus"
+    echo "NOK $publish_httpstatus"
     exit 1;
 fi
