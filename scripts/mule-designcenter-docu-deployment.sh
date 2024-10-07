@@ -74,7 +74,7 @@ httpstatus=$(curl -v \
 jq --color-output . ./http.response.json
 
 # get x-owner-id
-projectownerid=$(jq '.createdBy' http.response.json)
+projectownerid=$(jq --raw-output '.createdBy' http.response.json)
 
 #################################################################################################
 ## UPLOAD THE RAML DOCUMENTATION INTO ANYPOINT EXCHANGE                                        ##
