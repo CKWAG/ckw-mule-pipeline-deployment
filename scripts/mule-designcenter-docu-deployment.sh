@@ -152,6 +152,7 @@ publish_httpstatus=$(curl -v \
   -H "Authorization: bearer $muleaccesstoke" \
   -H "x-organization-id: $5" \
   -H "x-owner-id: $projectownerid" \
+  -H "Content-Type: application/json" \
   -X POST \
   --data '{\"name\":\"$2\", \"apiVersion\":\"$mainVersion\", \"version\":\"$strarr[0]\", \"main\":\"$4\", \"assetId\":\"$3\", \"groupId\":\"$5\",\"classifier\":\"raml\"}' \
   --write-out %{http_code} \
