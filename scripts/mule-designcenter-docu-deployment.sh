@@ -125,7 +125,6 @@ publish_httpstatus=$(curl -v \
   -H "x-organization-id: $5" \
   -H "x-owner-id: $projectownerid" \
   -H "Content-Type: application/json" \
-  --silent \
   --data "{\"status\":\"$assetStatus\", \"name\":\"$2\", \"apiVersion\":\"$mainVersion\", \"version\":\"$strarr\", \"main\":\"$4\", \"assetId\":\"$3\", \"groupId\":\"$5\",\"classifier\":\"raml\"}" \
   --write-out %{http_code} \
   --output ./http.response.json \
