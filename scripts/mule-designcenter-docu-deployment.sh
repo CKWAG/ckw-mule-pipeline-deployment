@@ -116,18 +116,18 @@ echo "the asset will be deployt as \"$assetStatus\" and main-version \"$mainVers
 #################################################################################################
 ## LOCK THE DESIGN CENTER PROJECT MASTER BRANCH                                                ##
 #################################################################################################
-httpstatus=$(curl -v \
-  -H "Authorization: bearer $muleaccesstoke" \
-  -H "x-organization-id: $5" \
-  -H "x-owner-id: $projectownerid" \
-  -X POST \
-  --silent \
-  --write-out %{http_code} \
-  --output ./http.response.json \
-  https://eu1.anypoint.mulesoft.com/designcenter/api-designer/projects/"$8"/branches/master/acquireLock);
+# httpstatus=$(curl -v \
+#  -H "Authorization: bearer $muleaccesstoke" \
+#  -H "x-organization-id: $5" \
+#  -H "x-owner-id: $projectownerid" \
+#  -X POST \
+#  --silent \
+#  --write-out %{http_code} \
+#  --output ./http.response.json \
+#  https://eu1.anypoint.mulesoft.com/designcenter/api-designer/projects/"$8"/branches/master/acquireLock);
 
 # print the http resonse to get better debug informations if something went wrong
-jq --color-output . ./http.response.json
+# jq --color-output . ./http.response.json
 
 #################################################################################################
 ## PUBLISH THE API RAML TO EXCHANGE AS AN ASSET                                                ##
