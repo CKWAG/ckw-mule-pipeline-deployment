@@ -141,7 +141,7 @@ publish_httpstatus=$(curl -v \
   --silent \
   --write-out %{http_code} \
   --output ./http.response.json \
-  https://eu1.anypoint.mulesoft.com/designcenter/api-designer/projects/"$8");
+  https://eu1.anypoint.mulesoft.com/designcenter/api-designer/projects/"$8"/branches/master/publish/exchange);
 
 
 # print the http resonse to get better debug informations if something went wrong
