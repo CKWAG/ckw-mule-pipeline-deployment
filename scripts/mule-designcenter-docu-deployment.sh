@@ -17,6 +17,7 @@
 #################################################################################################
 ## some debug informations                                                                     ##
 #################################################################################################
+publication_state=development
 
 echo "arguments passed:"
 echo "version:       $1"
@@ -27,6 +28,7 @@ echo "GroupId:       $5"
 echo "Design-Center: $8"
 echo "Description:   $9"
 
+echo "publishing state: $publication_state"
 
 
 #################################################################################################
@@ -79,14 +81,33 @@ jq --color-output . ./http.response.json
 projectownerid=96aa6e32-8927-47d8-905b-9cf8e422001d
 #$(jq --raw-output '.createdBy' http.response.json)
 
+httpstatus=$(curl -v \
+  -H "Authorization: bearer $muleaccesstoke" \
+  -H "x-organization-id: $5" \
+  -H "Content-Type: application/json" \
+  -X POST \
+  --silent \
+  --data "{\"sharedWith\":[{\"id\":\"96aa6e32-8927-47d8-905b-9cf8e422001d\",\"role\":\"ADMIN\",\"type\":\"user\"}]}" \
+  --write-out %{http_code} \
+  --output ./http.response.json \
+https://eu1.anypoint.mulesoft.com/designcenter/api-designer/projects/"$8"/access/permissions/share);
+
+
+# print the http resonse to get better debug informations if something went wrong
+jq --color-output . ./http.response.json
+
+#################################################################################################
+## UPLOAD THE RAML DOCUMENTATION INTO ANYPOINT EXCHANGE                                        ##
+#################################################################################################
+IFS='-'; #setting hyphen as delimiter  
 read -a strarr <<<"$1"; #reading str as an array as tokens separated by IFS
 
-assetStatus=development;
+assetStatus="development";
 
 # check if SNAPSHOT is not available
 if [ -z "${strarr[1]}" ];
 then
-      assetStatus=published;
+      assetStatus="published";
 fi
 
 # read the main-Version
@@ -97,6 +118,20 @@ mainVersion="v$strvers";
 ## debug output
 echo "the asset will be deployed as \"$assetStatus\" and main-version \"$mainVersion\" and detail-version $strarr";
 
+# httpstatus=$(curl -v \
+#  -H "Authorization: bearer $muleaccesstoke" \
+#  -H 'x-sync-publication: true' \
+#  -F "name=$2" \
+#  -F "description=$9" \
+#  -F 'type=RAML' \
+#  -F "status=$assetStatus" \
+#  -F "properties.mainFile=$4" \
+#  -F "properties.apiVersion=$mainVersion" \
+#  -F "files.raml.zip=@target/$3-$1-raml.zip" \
+#  --silent \
+#  --write-out %{http_code} \
+#  --output target/http.response.json \
+#  https://eu1.anypoint.mulesoft.com/exchange/api/v2/organizations/"$5"/assets/"$5"/"$3"/"$strarr");
 
 #################################################################################################
 ## LOCK THE DESIGN CENTER PROJECT MASTER BRANCH                                                ##
@@ -125,7 +160,8 @@ publish_httpstatus=$(curl -v \
   -H "x-organization-id: $5" \
   -H "x-owner-id: $projectownerid" \
   -H "Content-Type: application/json" \
-  --data "{\"status\":\"$assetStatus\", \"name\":\"$2\", \"apiVersion\":\"$mainVersion\", \"version\":\"$strarr\", \"main\":\"$4\", \"assetId\":\"$3\", \"groupId\":\"$5\",\"classifier\":\"raml\"}" \
+  --silent \
+  --data "{\"status\":\"$publication_state\", \"name\":\"$2\", \"apiVersion\":\"$mainVersion\", \"version\":\"$strarr\", \"main\":\"$4\", \"assetId\":\"$3\", \"groupId\":\"$5\",\"classifier\":\"raml\"}" \
   --write-out %{http_code} \
   --output ./http.response.json \
   https://eu1.anypoint.mulesoft.com/designcenter/api-designer/projects/"$8"/branches/master/publish/exchange);
