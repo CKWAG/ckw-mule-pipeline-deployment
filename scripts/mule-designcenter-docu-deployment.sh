@@ -81,17 +81,20 @@ jq --color-output . ./http.response.json
 projectownerid=96aa6e32-8927-47d8-905b-9cf8e422001d
 #$(jq --raw-output '.createdBy' http.response.json)
 
-#httpstatus=$(curl -v \
-#  -H "Authorization: bearer $muleaccesstoke" \
-#  -H "x-organization-id: $5" \
-#  -X POST \
-#  --silent \
-#  --write-out %{http_code} \
-#  --output ./http.response.json \
-#https://eu1.anypoint.mulesoft.com/designcenter/api-designer/projects/"$8"/access/permissions/share);
+httpstatus=$(curl -v \
+  -H "Authorization: bearer $muleaccesstoke" \
+  -H "x-organization-id: $5" \
+  -H "Content-Type: application/json" \
+  -X POST \
+  --silent \
+  --data "{\"sharedWith\":[{\"id\":\"96aa6e32-8927-47d8-905b-9cf8e422001d\",\"role\":\"ADMIN\",\"type\":\"user\"}]}" \
+  --write-out %{http_code} \
+  --output ./http.response.json \
+https://eu1.anypoint.mulesoft.com/designcenter/api-designer/projects/"$8"/access/permissions/share);
+
 
 # print the http resonse to get better debug informations if something went wrong
-#jq --color-output . ./http.response.json
+jq --color-output . ./http.response.json
 
 #################################################################################################
 ## UPLOAD THE RAML DOCUMENTATION INTO ANYPOINT EXCHANGE                                        ##
