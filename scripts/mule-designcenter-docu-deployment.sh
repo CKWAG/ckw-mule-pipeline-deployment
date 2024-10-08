@@ -17,6 +17,7 @@
 #################################################################################################
 ## some debug informations                                                                     ##
 #################################################################################################
+publication_state=development
 
 echo "arguments passed:"
 echo "version:       $1"
@@ -26,6 +27,9 @@ echo "RAML File:     $4"
 echo "GroupId:       $5"
 echo "Design-Center: $8"
 echo "Description:   $9"
+
+echo "publishing state: $publication_state"
+
 
 #################################################################################################
 ## create a bearer token and store it for later use                                            ##
@@ -153,12 +157,11 @@ publish_httpstatus=$(curl -v \
   -H "x-organization-id: $5" \
   -H "x-owner-id: $projectownerid" \
   -H "Content-Type: application/json" \
-  --data "{\"status\":\"development\", \"name\":\"$2\", \"apiVersion\":\"$mainVersion\", \"version\":\"$strarr\", \"main\":\"$4\", \"assetId\":\"$3\", \"groupId\":\"$5\",\"classifier\":\"raml\"}" \
+  --silent \
+  --data "{\"status\":\"$publication_state\", \"name\":\"$2\", \"apiVersion\":\"$mainVersion\", \"version\":\"$strarr\", \"main\":\"$4\", \"assetId\":\"$3\", \"groupId\":\"$5\",\"classifier\":\"raml\"}" \
   --write-out %{http_code} \
   --output ./http.response.json \
   https://eu1.anypoint.mulesoft.com/designcenter/api-designer/projects/"$8"/branches/master/publish/exchange);
-{"name":"ckw-api-test","apiVersion":"v1","version":"1.0.0","tags":[],"main":"ckw-api-test.raml","assetId":"ckw-api-test","groupId":"e8a7c8ac-9233-49e5-9623-ae7dbe3b6868","classifier":"raml","isVisual":false,"metadata":{"
-projectId":"aead88aa-fd73-4184-8ca5-6d43e7a78140","branchId":"master"},"publishList":[],"originalFormatVersion":"1.0","status":"development"}
 
 # print the http resonse to get better debug informations if something went wrong
 jq --color-output . ./http.response.json
