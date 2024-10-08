@@ -152,13 +152,8 @@ publish_httpstatus=$(curl -v \
   -H "Authorization: bearer $muleaccesstoke" \
   -H "x-organization-id: $5" \
   -H "x-owner-id: $projectownerid" \
-  -F "name:$2" \
-  -F "apiVersion:$mainVersion" \
-  -F "version:1.0.0" \
-  -F "main:$4" \
-  -F "assetId:$3" \
-  -F "groupId:$5" \
-  -F "classifier:raml" \
+  -X POST \
+  --data '{\"name\":\"$2\", \"apiVersion\":\"$mainVersion\", \"version\":\"$strarr[0]\", \"main\":\"$4\", \"assetId\":\"$3\", \"groupId\":\"$5\",\"classifier\":\"raml\"}' \
   --write-out %{http_code} \
   --output ./http.response.json \
   https://eu1.anypoint.mulesoft.com/designcenter/api-designer/projects/"$8"/branches/master/publish/exchange);
