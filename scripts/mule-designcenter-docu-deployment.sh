@@ -119,7 +119,7 @@ echo "the asset will be deployt as \"$assetStatus\" and main-version \"$mainVers
 httpstatus=$(curl -v \
   -H "Authorization: bearer $muleaccesstoke" \
   -H "x-organization-id: $5" \
-  -H "x-owner-id: 47c0e86c-e330-4dea-aa43-9c2f58c0ba84 \ # $projectownerid" \
+  -H "x-owner-id: 47c0e86c-e330-4dea-aa43-9c2f58c0ba84" \ # $projectownerid" \
   -X POST \
   --silent \
   --write-out %{http_code} \
@@ -135,7 +135,7 @@ httpstatus=$(curl -v \
 publish_httpstatus=$(curl -v \
   -H "Authorization: bearer $muleaccesstoke" \
   -H "x-organization-id: $5" \
-  -H "x-owner-id: 47c0e86c-e330-4dea-aa43-9c2f58c0ba84 \ # $projectownerid" \
+  -H "x-owner-id: 47c0e86c-e330-4dea-aa43-9c2f58c0ba84" \ # $projectownerid" \
   -X POST \
   -d "{'name':'$2', 'apiVersion':'$mainVersion', 'version':'$strarr', 'main':'$4', 'assetId':'$3', 'groupId':'$5','classifier':'raml'}" \
   --silent \
@@ -153,7 +153,7 @@ jq --color-output . ./http.response.json
 httpstatus=$(curl -v \
   -H "Authorization: bearer $muleaccesstoke" \
   -H "x-organization-id: $5" \
-  -H "x-owner-id: 47c0e86c-e330-4dea-aa43-9c2f58c0ba84 \ # $projectownerid" \
+  -H "x-owner-id: 47c0e86c-e330-4dea-aa43-9c2f58c0ba84" \ # $projectownerid" \
   -X POST \
   --silent \
   --write-out %{http_code} \
