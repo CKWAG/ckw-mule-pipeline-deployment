@@ -153,7 +153,7 @@ publish_httpstatus=$(curl -v \
   -H "x-organization-id: $5" \
   -H "x-owner-id: $projectownerid" \
   -X POST \
-  -d "{'name':'$2', 'apiVersion':'$mainVersion', 'version':'$strarr[0]', 'main':'$4', 'assetId':'$3', 'groupId':'$5','classifier':'raml'}" \
+  -d "{'name':'$2', 'apiVersion':'$mainVersion', 'version':'1.0.0', 'main':'$4', 'assetId':'$3', 'groupId':'$5','classifier':'raml'}" \
   --silent \
   --write-out %{http_code} \
   --output ./http.response.json \
