@@ -153,7 +153,7 @@ publish_httpstatus=$(curl -v \
   -H "x-organization-id: $5" \
   -H "x-owner-id: $projectownerid" \
   -H "Content-Type: application/json" \
-  --data {\"name\":\"$2\", \"apiVersion\":\"$mainVersion\", \"version\":\"$strarr[0]\", \"main\":\"$4\", \"assetId\":\"$3\", \"groupId\":\"$5\",\"classifier\":\"raml\"} \
+  --data "{\"name\":\"$2\", \"apiVersion\":\"$mainVersion\", \"version\":\"$strarr[0]\", \"main\":\"$4\", \"assetId\":\"$3\", \"groupId\":\"$5\",\"classifier\":\"raml\"}" \
   --write-out %{http_code} \
   --output ./http.response.json \
   https://eu1.anypoint.mulesoft.com/designcenter/api-designer/projects/"$8"/branches/master/publish/exchange);
