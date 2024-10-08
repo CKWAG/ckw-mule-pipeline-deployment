@@ -74,7 +74,8 @@ httpstatus=$(curl -v \
 jq --color-output . ./http.response.json
 
 # get x-owner-id
-projectownerid=$(jq --raw-output '.createdBy' http.response.json)
+projectownerid=96aa6e32-8927-47d8-905b-9cf8e422001d
+#$(jq --raw-output '.createdBy' http.response.json)
 
 #httpstatus=$(curl -v \
 #  -H "Authorization: bearer $muleaccesstoke" \
@@ -108,7 +109,7 @@ read -a strvers <<<"$strarr[0]"; #reading str as an array as tokens separated by
 mainVersion="v$strvers";
 
 ## debug output
-echo "the asset will be deployt as \"$assetStatus\" and main-version \"$mainVersion\" and detail-version $strarr";
+echo "the asset will be deployed as \"$assetStatus\" and main-version \"$mainVersion\" and detail-version $strarr";
 
 # httpstatus=$(curl -v \
 #  -H "Authorization: bearer $muleaccesstoke" \
@@ -152,7 +153,7 @@ publish_httpstatus=$(curl -v \
   -H "x-organization-id: $5" \
   -H "x-owner-id: $projectownerid" \
   -X POST \
-  -d "{'name':'$2', 'apiVersion':'$mainVersion', 'version':'$strarr', 'main':'$4', 'assetId':'$3', 'groupId':'$5','classifier':'raml'}" \
+  -d "{'name':'$2', 'apiVersion':'$mainVersion', 'version':'$strarr[0]', 'main':'$4', 'assetId':'$3', 'groupId':'$5','classifier':'raml'}" \
   --silent \
   --write-out %{http_code} \
   --output ./http.response.json \
