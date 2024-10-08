@@ -154,7 +154,7 @@ publish_httpstatus=$(curl -v \
   -H "x-owner-id: $projectownerid" \
   -F "name=$2" \
   -F "apiVersion=$mainVersion" \
-  -F "version=$strarr" \
+  -F "version=$strarr[0]" \
   -F "main=$4" \
   -F "assetId=$3" \
   -F "groupId=$5" \
