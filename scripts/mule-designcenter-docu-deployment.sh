@@ -81,12 +81,12 @@ projectownerid=96aa6e32-8927-47d8-905b-9cf8e422001d
 
 read -a strarr <<<"$1"; #reading str as an array as tokens separated by IFS
 
-assetStatus="development";
+assetStatus=development;
 
 # check if SNAPSHOT is not available
 if [ -z "${strarr[1]}" ];
 then
-      assetStatus="published";
+      assetStatus=published;
 fi
 
 # read the main-Version
