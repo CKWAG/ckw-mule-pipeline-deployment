@@ -128,7 +128,7 @@ httpstatus=$(curl -v \
   https://eu1.anypoint.mulesoft.com/designcenter/api-designer/projects/"$8"/branches/master/acquireLock);
 
 # print the http resonse to get better debug informations if something went wrong
- jq --color-output . ./http.response.json
+jq --color-output . ./http.response.json
 
 #################################################################################################
 ## PUBLISH THE API RAML TO EXCHANGE AS AN ASSET                                                ##
