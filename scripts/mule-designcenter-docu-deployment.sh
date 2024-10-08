@@ -74,8 +74,20 @@ httpstatus=$(curl -v \
 jq --color-output . ./http.response.json
 
 # get x-owner-id
-#projectownerid=$(jq --raw-output '.createdBy' http.response.json)
-projectownerid=47c0e86c-e330-4dea-aa43-9c2f58c0ba84
+projectownerid=$(jq --raw-output '.createdBy' http.response.json)
+
+#httpstatus=$(curl -v \
+#  -H "Authorization: bearer $muleaccesstoke" \
+#  -H "x-organization-id: $5" \
+#  -X POST \
+#  --silent \
+#  --write-out %{http_code} \
+#  --output ./http.response.json \
+#https://eu1.anypoint.mulesoft.com/designcenter/api-designer/projects/"$8"/access/permissions/share);
+
+# print the http resonse to get better debug informations if something went wrong
+#jq --color-output . ./http.response.json
+
 #################################################################################################
 ## UPLOAD THE RAML DOCUMENTATION INTO ANYPOINT EXCHANGE                                        ##
 #################################################################################################
