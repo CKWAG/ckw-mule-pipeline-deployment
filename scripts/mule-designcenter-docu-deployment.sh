@@ -145,8 +145,8 @@ if [ $publish_httpstatus -lt 300 ];
 then
     echo "OK, HTTP-Status $publish_httpstatus";
     exit 0;
-fi
-if [ $publish_httpstatus -eq 409 ]; 
+else if [ $publish_httpstatus -eq 409 ];
+then 
     echo "WARNING $publish_httpstatus - The asset was already published as Stable"
     exit 0;
 else
