@@ -78,7 +78,7 @@ then
       assetStatus="published";
       publication_state=published
 fi
-publication_state=published
+
 # read the main-Version
 IFS='.'; #setting point as delimiter  
 read -a strvers <<<"$strarr[0]"; #reading str as an array as tokens separated by IFS
