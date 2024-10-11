@@ -40,13 +40,13 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Checkout Deployment Bash Scripts for the Design Center Documentation
+    - name: Checkout Deployment Bash Scripts for the Design Center Publish the API to Exchange Portal.
       uses: actions/checkout@v3
       with:
         repository: CKWAG/ckw-mule-pipeline-deployment
         path: docu-deployment
 
-    - name: Deploy the Mule-App to the RuntimeManager and Publish the API to Exchange Portal.
+    - name: Deploy the Mule-App to the RuntimeManager.
       run: |
         #internal used variables
         MAVEN_PROFILE="CloudHubSandDev"
