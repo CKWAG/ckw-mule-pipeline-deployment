@@ -61,7 +61,7 @@ runs:
 
         MULE_ENV= $(grep 'name="env"' ./src/main/mule/config.xml | awk '{print $6}' | cut -d'=' -f2)
 
-        echo "TARGET ENVIRONMENT: " + $MULE_ENV 
+        echo "TARGET ENVIRONMENT: $MULE_ENV" 
 
         echo "environment: '$MULE_ENV', Runtime: '$MULE_SERVER', Documentation-Source: '$MULE_DOCUMENTATION', MavenDocuProfile: '$MAVEN_DOCU_PROFILE"
         if [[ $MULE_SERVER == "onprem" ]] || [[ $MULE_SERVER == "azure" ]]; then
