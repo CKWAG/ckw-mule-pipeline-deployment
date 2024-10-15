@@ -59,9 +59,7 @@ runs:
         
         #	<global-property doc:name="Global Property" doc:id="1288fd76-f2a8-4477-b6bd-9e16e69676fa" name="env" value="dev" />
 
-        MULE_ENV= $(grep 'name="env"' ./src/main/mule/config.xml | awk '{print $6}' | cut -d'=' -f2)
-
-        echo "TARGET ENVIRONMENT: $MULE_ENV" 
+        MULE_ENV=$(grep 'name="env"' ./src/main/mule/config.xml | awk '{print $6}' | cut -d'=' -f2)
 
         echo "environment: '$MULE_ENV', Runtime: '$MULE_SERVER', Documentation-Source: '$MULE_DOCUMENTATION', MavenDocuProfile: '$MAVEN_DOCU_PROFILE"
         if [[ $MULE_SERVER == "onprem" ]] || [[ $MULE_SERVER == "azure" ]]; then
