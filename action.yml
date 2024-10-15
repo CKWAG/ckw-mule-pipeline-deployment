@@ -57,7 +57,7 @@ runs:
         
         # Get the Environment target
         
-        	<global-property doc:name="Global Property" doc:id="1288fd76-f2a8-4477-b6bd-9e16e69676fa" name="env" value="dev" />
+        #	<global-property doc:name="Global Property" doc:id="1288fd76-f2a8-4477-b6bd-9e16e69676fa" name="env" value="dev" />
 
         MULE_ENV= $(grep 'name="env"' ./src/main/mule/config.xml | awk '{print $6}' | cut -d'=' -f2)
 
