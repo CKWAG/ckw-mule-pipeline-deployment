@@ -49,7 +49,7 @@ runs:
     - name: Deploy the Mule-App to the RuntimeManager.
       run: |
         #internal used variables
-        MAVEN_PROFILE="CloudHubSandDev"
+        MAVEN_PROFILE="RuntimeManagerSandboxDev" #  "CloudHubSandDev"
         MAVEN_DOCU_PROFILE="${MULE_DOCUMENTATION}Docu"
         DOCU_MAVEN_GOAL="deploy"
         DOCU_MAVEN_PROFILE="ExchangeDeploy"
