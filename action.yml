@@ -62,9 +62,14 @@ runs:
         if [[ $MULE_SERVER == "onprem" ]] || [[ $MULE_SERVER == "azure" ]]; then
            MAVEN_PROFILE="RuntimeManager"
            if [[ $MULE_ENV == "prod" ]]; then
-              ADDITIONAL_MAVEN_ARGS="-Danypoint.target=ckw-$MULE_SERVER-prod"
+             #  MAVEN_PROFILE="RuntimeManagerProduction" 
+              ADDITIONAL_MAVEN_ARGS="-Danypoint.target=ckw-$MULE_SERVER-prod -Danypoint.server=server" # server / cluster
+           elif [[ $MULE_ENV == "qa" ]]; then  
+              MAVEN_PROFILE="RuntimeManagerSandboxTest" 
+              ADDITIONAL_MAVEN_ARGS="-Danypoint.target=ckw-$MULE_SERVER-test -Danypoint.server=server" # server 
            else 
-              ADDITIONAL_MAVEN_ARGS="-Danypoint.target=ckw-$MULE_SERVER-test"
+              MAVEN_PROFILE="RuntimeManagerSandboxDev" 
+              ADDITIONAL_MAVEN_ARGS="-Danypoint.target=ckw-$MULE_SERVER-test -Danypoint.server=server" # server
            fi
         elif [[ $MULE_SERVER == "CloudHub" ]] && [[ $MULE_ENV == "prod" ]]; then
             MAVEN_PROFILE="CloudHubProd"
