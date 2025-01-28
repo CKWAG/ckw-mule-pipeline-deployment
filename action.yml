@@ -129,7 +129,7 @@ runs:
       shell: bash
  
     - name: upload the generated target-sites to the workspace
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: QualityResults
         path: target/site/
