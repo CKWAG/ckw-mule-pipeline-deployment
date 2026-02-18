@@ -37,6 +37,10 @@ inputs:
     required: true
   encryptSecret:
     required: true
+  optionalMavenArgs:
+    required: false
+    type: string
+    default: ""
 runs:
   using: "composite"
   steps:
@@ -126,6 +130,7 @@ runs:
         GH_USER: ${{ inputs.ghUser }}
         GH_PASSWORD: ${{ inputs.ghPassword }}
         ENCRYPTSECRET: ${{ inputs.encryptSecret }}
+        OPTIONAL_MAVEN_ARGS: ${{ inputs.optionalMavenArgs }}
       shell: bash
  
     - name: upload the generated target-sites to the workspace
