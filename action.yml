@@ -41,7 +41,7 @@ runs:
   using: "composite"
   steps:
     - name: Checkout Deployment Bash Scripts for the Design Center Publish the API to Exchange Portal.
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         repository: CKWAG/ckw-mule-pipeline-deployment
         path: docu-deployment
